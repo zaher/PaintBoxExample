@@ -12,6 +12,8 @@ object Form1: TForm1
     Height = 280
     Top = 56
     Width = 305
+    ParentShowHint = False
+    ShowHint = True
     OnMouseMove = PaintBox1MouseMove
     OnMouseUp = PaintBox1MouseUp
     OnPaint = PaintBox1Paint

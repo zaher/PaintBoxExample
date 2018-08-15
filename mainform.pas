@@ -110,36 +110,44 @@ var
   l: Integer;
 
 begin
-  //this part here we calc needed variable copued from top better to move it into function
-  //-----------------------------------------
-  l := length(BrightColorArray);
+  with PaintBox1 do
+  begin
+    //this part here we calc needed variable copued from top better to move it into function
+    //-----------------------------------------
+    l := length(BrightColorArray);
 
-  //first need to calc RowCount
-  RowCount := l div ColCount;
-  if (l mod ColCount) > 0 then //there is a uncompleted row
-    Inc(RowCount);
+    //first need to calc RowCount
+    RowCount := l div ColCount;
+    if (l mod ColCount) > 0 then //there is a uncompleted row
+      Inc(RowCount);
 
-  //Now we need to calc the hight of cell and the width of it
-  w := ClientWidth div ColCount;// maybe we will lose some pixle we will ignore it
-  h := ClientHeight div RowCount;//
-  //-----------------------------------------
+    //Now we need to calc the hight of cell and the width of it
+    w := ClientWidth div ColCount;// maybe we will lose some pixle we will ignore it
+    h := ClientHeight div RowCount;//
+    //-----------------------------------------
 
-  Row := (y div h);
-  if (y mod h) > 0 then //if there is a rest that mean we are in middle of row, we need to add 1
-    Inc(Row);
+    Col := x div w;
+    //if (x mod w) > 0 then //if there is a rest that mean we are in middle of row, we need to add 1
+    // Inc(Col);
 
-  Col := x div w;
+    Row := (y div h);
+    //if (y mod h) > 0 then //if there is a rest that mean we are in middle of row, we need to add 1
+    // Inc(Row);
 
-  Index := Row * ColCount + Col; //yes index is easy
+    Index := Row * ColCount + Col; //yes index is easy
+    Result := Index < l;
+  end;
 end;
 
 function TForm1.DrawCell(ACanvas: TCanvas; x, y, w, h, index: Integer): Boolean;
 begin
   Result := Index < length(BrightColorArray);
   if Result then
+  begin
+    ACanvas.Brush.Color := BrightColorArray[Index];
     ACanvas.Rectangle(x, y, x + w, y + h);
+  end;
 end;
-
 
 end.
 

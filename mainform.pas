@@ -127,15 +127,11 @@ begin
     //-----------------------------------------
 
     Col := x div w;
-    //if (x mod w) > 0 then //if there is a rest that mean we are in middle of row, we need to add 1
-    // Inc(Col);
-
     Row := (y div h);
-    //if (y mod h) > 0 then //if there is a rest that mean we are in middle of row, we need to add 1
-    // Inc(Row);
 
     Index := Row * ColCount + Col; //yes index is easy
-    Result := Index < l;
+
+    Result := Index < l; //return true if it in array
   end;
 end;
 

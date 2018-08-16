@@ -17,8 +17,7 @@ type
     Shape1: TShape;
 
     procedure PaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-
-      procedure PaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure PaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure PaintBox1Paint(Sender: TObject);
   private
   public
@@ -27,6 +26,8 @@ type
     //Calc index of cell of array from x and y
     //return true if we find a cell , not empty space
     function PointToIndex(x, y: Integer; var Col, Row, Index: Integer): Boolean;
+
+    procedure Prepare(var ARowCount, AWidth, AHeight: Integer);
   end;
 
 var
@@ -84,19 +85,9 @@ var
 begin
   with PaintBox1 do
   begin
-    //this part here we calc needed variable
-    //-----------------------------------------
     l := length(BrightColorArray);
 
-    //first need to calc RowCount
-    RowCount := l div ColCount;
-    if (l mod ColCount) > 0 then //there is a uncompleted row
-      Inc(RowCount);
-
-    //Now we need to calc the hight of cell and the width of it
-    w := ClientWidth div ColCount;// maybe we will lose some pixle we will ignore it
-    h := ClientHeight div RowCount;//
-    //-----------------------------------------
+    Prepare(RowCount, w, h);
 
     index := 0;
 
@@ -124,19 +115,8 @@ var
 begin
   with PaintBox1 do
   begin
-    //this part here we calc needed variable copued from top better to move it into function
-    //-----------------------------------------
+    Prepare(RowCount, w, h);
     l := length(BrightColorArray);
-
-    //first need to calc RowCount
-    RowCount := l div ColCount;
-    if (l mod ColCount) > 0 then //there is a uncompleted row
-      Inc(RowCount);
-
-    //Now we need to calc the hight of cell and the width of it
-    w := ClientWidth div ColCount;// maybe we will lose some pixle we will ignore it
-    h := ClientHeight div RowCount;//
-    //-----------------------------------------
 
     Col := x div w;
     Row := (y div h);
@@ -144,6 +124,24 @@ begin
     Index := Row * ColCount + Col; //yes index is easy
 
     Result := Index < l; //return true if it in array
+  end;
+end;
+
+procedure TForm1.Prepare(var ARowCount, AWidth, AHeight: Integer);
+var
+  l: Integer;
+begin
+  with PaintBox1 do
+  begin
+    l := Length(BrightColorArray);
+    //first need to calc RowCount
+    ARowCount := l div ColCount;
+    if (l mod ColCount) > 0 then //there is a uncompleted row
+      Inc(ARowCount);
+
+    //Now we need to calc the hight of cell and the width of it
+    AWidth := ClientWidth div ColCount;// maybe we will lose some pixle we will ignore it
+    AHeight := ClientHeight div ARowCount;
   end;
 end;
 
